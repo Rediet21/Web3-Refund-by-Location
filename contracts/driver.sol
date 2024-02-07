@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;
+
+import "hardhat/console.sol";
+
 import "./IERC721.sol";
 
-contract GeologixContract {
+contract GeologixContract  {
     //structure for saving the drivers information
     struct Driver {
         uint256 complianceRating;
