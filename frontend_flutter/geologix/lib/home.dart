@@ -143,36 +143,36 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
-        // final client = Web3Client(rpcUrl, Client());
-        // final contract = DeployedContract(
-        //   ContractAbi.fromJson(contractABI, 'ContractName'),
-        //   contractAddress,
-        // );
+        final client = Web3Client(rpcUrl, Client());
+        final contract = DeployedContract(
+          ContractAbi.fromJson(contractABI, 'ContractName'),
+           contractAddress,
+         );
 
-        // final credentials =
-        //     await client.credentialsFromPrivateKey('YOUR_PRIVATE_KEY');
-        // final ethFunction = contract.function('sendGPSReading');
+         final credentials =
+             await client.credentialsFromPrivateKey('YOUR_PRIVATE_KEY');
+         final ethFunction = contract.function('sendGPSReading');
 
-        // final result = await client.sendTransaction(
-        //   credentials,
-        //   Transaction.callContract(
-        //     contract: contract,
-        //     function: ethFunction,
-        //     parameters: [
-        //       BigInt.from(currentLocation.longitude * 10e6),
-        //       BigInt.from(currentLocation.latitude * 10e6),
-        //       BigInt.from(DateTime.now().millisecondsSinceEpoch),
-        //     ],
-        //   ),
-        //   fetchChainIdFromNetworkId: true,
-        // );
+         final result = await client.sendTransaction(
+           credentials,
+           Transaction.callContract(
+             contract: contract,
+             function: ethFunction,
+             parameters: [
+               BigInt.from(currentLocation.longitude * 10e6),
+               BigInt.from(currentLocation.latitude * 10e6),
+               BigInt.from(DateTime.now().millisecondsSinceEpoch),
+             ],
+           ),
+           fetchChainIdFromNetworkId: true,
+         );
         final snackBar = SnackBar(
           content: const Text('Sending location successful'),
           backgroundColor: (Colors.green.shade200),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-        // print('Transaction result: ${result}');
+         print('Transaction result: ${result}');
       }
     } catch (e) {
       final snackBar = SnackBar(
