@@ -5,7 +5,7 @@ async function main() {
   const DriverCompliance = await ethers.getContractFactory("DriverCompliance");
   const driverCompliance = await DriverCompliance.deploy(
     /* Pass the addresses of rewardsToken and employer here */
-    "758d13282dd831172082067b4c79c21fb860e0e541e1526d3079f6fb4d95c38c",
+    rewardsTokenAddress,
     //employer adress as registered in ethereum
     employerAddress
   );
