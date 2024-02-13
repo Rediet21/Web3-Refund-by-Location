@@ -145,24 +145,26 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         final client = Web3Client(rpcUrl, Client());
         final contract = DeployedContract(
-          ContractAbi.fromJson(contractABI, 'ContractName'),
+          ContractAbi.fromJson(contractABI, 'DriverCompliance'),
            contractAddress,
          );
 
          final credentials =
+             //
              await client.credentialsFromPrivateKey('YOUR_PRIVATE_KEY');
-         final ethFunction = contract.function('sendGPSReading');
+         final ethFunction = contract.function('GetLocation');
 
          final result = await client.sendTransaction(
            credentials,
            Transaction.callContract(
              contract: contract,
              function: ethFunction,
-             parameters: [
-               BigInt.from(currentLocation.longitude * 10e6),
-               BigInt.from(currentLocation.latitude * 10e6),
-               BigInt.from(DateTime.now().millisecondsSinceEpoch),
+             parameters: [ 
+              currentLocation.longitude.toString(), // Convert longitude to string
+              currentLocation.latitude.toString(), // Convert latitude to string 
+              DateTime.now().millisecondsSinceEpoch, // Leave timestamp as integer
              ],
+             
            ),
            fetchChainIdFromNetworkId: true,
          );

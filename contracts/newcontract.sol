@@ -12,8 +12,8 @@ contract DriverCompliance {
         //uint256 tokenBalance;
         //bool isRegistered;
     }
-    //enum is user-defined data & representing diffrent level of compliance 
-    enum ComplianceLevel {Bad, OK, Good, Excellent}
+    //enum is user-defined data & representing diffrent level of compliance here
+    enum ComplianceLevel {Bad, Good, Excellent}
     
     //creating state variables t
     ERC20 public rewardsToken;
@@ -38,7 +38,7 @@ contract DriverCompliance {
     event SalaryPaid(address indexed driver, uint256 amount);
     event RewardPaid(address indexed driver, uint256 amount);
     
-    //this needs explanation 
+    // take adress of the initator and the ERC20 token
     constructor(address _rewardsToken, address _employer) {
         rewardsToken = ERC20(_rewardsToken);
         employer = _employer;
@@ -93,9 +93,9 @@ contract DriverCompliance {
             rewardsToken.transferFrom(employer, msg.sender, rewardPer_Compliance * 3);
         } 
 
-    payable(msg.sender).transfer(salary);
-    emit RewardPaid(msg.sender, rewardPer_Compliance * uint256(compliance));
-    emit SalaryPaid(msg.sender, salary);
+        payable(msg.sender).transfer(salary);
+        emit RewardPaid(msg.sender, rewardPer_Compliance * uint256(compliance));
+        emit SalaryPaid(msg.sender, salary);
 }
 
 }
