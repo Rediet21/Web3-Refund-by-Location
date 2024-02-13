@@ -1,47 +1,75 @@
-// App.js
 import React, { useState } from 'react';
 import './App.css';
 
+import web3 from 'web3';
+
+
 function App() {
-  const [account, setAccount] = useState('');
+  const [employerAddress, setEmployerAddress] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [timestamp, setTimestamp] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform necessary actions with the input data
-    console.log('Account:', account);
-    console.log('Latitude:', latitude);
-    console.log('Longitude:', longitude);
-    console.log('Timestamp:', timestamp);
+
+    // Check if MetaMask is installed and connected
+    if (typeof window.ethereum !== 'undefined') {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0];
+
+      const contractAddress = 'CONTRACT_ADDRESS'; // Replace with the actual contract address on the Sepolia testnet
+
+      // Prepare the transaction data
+      const transactionData = {
+        from: employerAddress,
+        to: contractAddress,
+        value: '5000000000000000000', // 5 ETH in wei
+        data: '0x', // The function call data if needed
+      };
+
+      // Send the transaction
+      try {
+        await window.ethereum.request({
+          method: 'eth_sendTransaction',
+          params: [transactionData],
+        });
+
+        console.log('Transaction sent successfully');
+      } catch (error) {
+        console.error('Failed to send transaction:', error);
+      }
+    } else {
+      console.error('MetaMask is not installed or not connected');
+    }
+
     // Reset the input fields
-    setAccount('');
+    setEmployerAddress('');
     setLatitude('');
     setLongitude('');
     setTimestamp('');
   };
-  
+
   return (
     <div className="App">
-      <header className= 'App-header'>
-      <h1 className='title'>Employer Input</h1>
-      
-      <form onSubmit={handleSubmit}>
-        <div className='account'>
-          <label htmlFor="account" className='acnt_label'>Account:</label>
-          <input
-            type="text"
-            id="account"
-            value={account}
-            onChange={(e) => setAccount(e.target.value)}
-            placeholder="Enter your account"
-            required
-          />
-        </div>
-        
-        <p>Put the Location required to reach here</p>
-        <label htmlFor="location" className='loc_label'>Location:</label>
+      <header className='App-header'>
+        <h1 className='title'>Admin Page</h1>
+
+        <form onSubmit={handleSubmit}>
+          <div className='employer-address'>
+            <label htmlFor="employer-address" className='emp_label'>Employer Address:</label>
+            <input
+              type="text"
+              id="employer-address"
+              value={employerAddress}
+              onChange={(e) => setEmployerAddress(e.target.value)}
+              placeholder="Enter employer address"
+              required
+            />
+          </div>
+
+          <p>Put the Location required to reach here</p>
+          <label htmlFor="location" className='loc_label'>Location:</label>
           <div className="location-inputs">
             <input className='latitude'
               type="text"
@@ -59,26 +87,23 @@ function App() {
               placeholder="Enter longitude"
               required
             />
-        <div/>
-      <div/>   
-          
-        </div>
-        <div className='Timestamp'>
-          <p>Put the time stamp to reach the location</p>
-          <label htmlFor="timestamp" className='time_label'>Timestamp:</label>
-          <input
-            type="text"
-            id="timestamp"
-            value={timestamp}
-            onChange={(e) => setTimestamp(e.target.value)}
-            placeholder="Enter timestamp"
-            required
-          />
-        </div>
-        <button type="submit" className='submit'>Submit</button>
-      </form>
+          </div>
+
+          <div className='Timestamp'>
+            <p>Put the time stamp to reach the location</p>
+            <label htmlFor="timestamp" className='time_label'>Timestamp:</label>
+            <input
+              type="text"
+              id="timestamp"
+              value={timestamp}
+              onChange={(e) => setTimestamp(e.target.value)}
+              placeholder="Enter timestamp"
+              required
+            />
+          </div>
+          <button type="submit" className='submit'>Submit</button>
+        </form>
       </header>
-      
     </div>
   );
 }
